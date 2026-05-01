@@ -1679,6 +1679,8 @@ function sumRows(rows) {
 // ═══════════════════════════════════════
 // AIRTABLE SUBMISSION
 // ═══════════════════════════════════════
+let airtableRecordId = null; // store Stage 1 record ID to update at Stage 2
+
 async function submitToAirtable(stageCompleted) {
   const rev = parseFloat(document.getElementById('revenue')?.value) || 0;
   const tot = sF1() + sC1() + sO1() + sG1();
@@ -1690,6 +1692,7 @@ async function submitToAirtable(stageCompleted) {
 
   const payload = {
     stage_completed:        stageCompleted,
+    record_id:              airtableRecordId, // null for Stage 1, set for Stage 2
     founderName:            v('founderName'),
     agencyName:             v('agencyName'),
     revenue:                rev,
@@ -1750,13 +1753,17 @@ async function submitToAirtable(stageCompleted) {
   };
 
   try {
-    await fetch('/api/submit-diagnostic', {
+    const res = await fetch('/api/submit-diagnostic', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify(payload),
     });
+    const json = await res.json();
+    // Save record ID so Stage 2 can update the same record
+    if (json.id && !airtableRecordId) {
+      airtableRecordId = json.id;
+    }
   } catch (err) {
-    // Fail silently — never break the founder's experience
     console.error('Airtable submission error:', err);
   }
 }
