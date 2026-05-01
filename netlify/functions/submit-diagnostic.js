@@ -17,7 +17,7 @@ export default async (request, context) => {
   const record = {
     fields: {
       // ── METADATA ──
-      'Submission Date':              new Date().toLocaleString('en-GB'),
+      'Submission Date':              new Date().toISOString().split('T')[0],
       'Stage Completed':              data.stage_completed              || '',
 
       // ── FOUNDER ──
@@ -66,46 +66,46 @@ export default async (request, context) => {
       'RAG: Growth & Positioning':    data.rag_growth                   || '',
 
       // ── STAGE 2: CLIENTS ──
-      'Client Tenure':                data.tenure_label                 || '',
-      'Client Spend Trajectory':      data.spendtraj_label              || '',
-      'Upsell / Cross-sell Rate':     data.upsell_label                 || '',
-      'Number of Active Clients':     data.activeclients_label          || '',
-      'Buyer Persona':                data.buyerpersona_label           || '',
-      'Client Size':                  data.clientsize_label             || '',
-      'Contract Transferability':     data.contracttransfer_label       || '',
-      'Sales Cycle Length':           data.salescycle_label             || '',
-      'Proposal Close Rate':          data.closerate_label              || '',
-      'Marketing Spend':              data.mktspend_label               || '',
+      'S2: Client Tenure':            data.tenure_label                 || '',
+      'S2: Spend Trajectory':         data.spendtraj_label              || '',
+      'S2: Upsell Rate':              data.upsell_label                 || '',
+      'S2: Active Clients':           data.activeclients_label          || '',
+      'S2: Buyer Persona':            data.buyerpersona_label           || '',
+      'S2: Client Size':              data.clientsize_label             || '',
+      'S2: Contract Transfer':        data.contracttransfer_label       || '',
+      'S2: Sales Cycle':              data.salescycle_label             || '',
+      'S2: Close Rate':               data.closerate_label              || '',
+      'S2: Marketing Spend':          data.mktspend_label               || '',
 
       // ── STAGE 2: TEAM ──
-      'Client Relationship Owner':    data.relowner_label               || '',
-      'Sales Owner':                  data.salesowner_label             || '',
-      'Utilisation Rate':             data.utilisation_label            || '',
-      'Services Productised':         data.productised_label            || '',
-      'Staff Tenure':                 data.stafftenure_label            || '',
-      'Founder Time Split':           data.foundersplit_label           || '',
-      'Second-in-Command':            data.sic_label                    || '',
+      'S2: Relationship Owner':       data.relowner_label               || '',
+      'S2: Sales Owner':              data.salesowner_label             || '',
+      'S2: Utilisation':              data.utilisation_label            || '',
+      'S2: Productised':              data.productised_label            || '',
+      'S2: Staff Tenure':             data.stafftenure_label            || '',
+      'S2: Founder Split':            data.foundersplit_label           || '',
+      'S2: 2IC / Succession':         data.sic_label                    || '',
 
       // ── STAGE 2: MARKET ──
-      'IP / Frameworks':              data.ip_label                     || '',
-      'Thought Leadership':           Array.isArray(data.thoughtleadership)
+      'S2: IP / Frameworks':          data.ip_label                     || '',
+      'S2: Thought Leadership':       Array.isArray(data.thoughtleadership)
                                         ? data.thoughtleadership.join(', ')
                                         : (data.thoughtleadership || ''),
-      'Case Study Library':           data.casestudies_label            || '',
-      'NPS / Satisfaction':           data.nps_label                    || '',
-      'Positioning Statement':        data.posstmt                      || '',
+      'S2: Case Studies':             data.casestudies_label            || '',
+      'S2: NPS':                      data.nps_label                    || '',
+      'S2: Positioning Statement':    data.posstmt                      || '',
 
       // ── STAGE 2: EXIT ──
-      'Written Client Contracts':     data.contracts_label              || '',
-      'Financial Rigour':             data.financials_label             || '',
-      'IP Documentation':             data.ipdocs_label                 || '',
-      'Employment Agreements':        data.employment_label             || '',
-      'Data Room Readiness':          data.dataroom_label               || '',
-      'Expansion Opportunities':      Array.isArray(data.expansion)
+      'S2: Client Contracts':         data.contracts_label              || '',
+      'S2: Financial Rigour':         data.financials_label             || '',
+      'S2: IP Documentation':         data.ipdocs_label                 || '',
+      'S2: Employment Agreements':    data.employment_label             || '',
+      'S2: Data Room':                data.dataroom_label               || '',
+      'S2: Expansion':                Array.isArray(data.expansion)
                                         ? data.expansion.join(', ')
                                         : (data.expansion || ''),
-      'Growth Strategy':              data.growthstrat_label            || '',
-      'Quality of Earnings':          data.qoe_label                    || '',
+      'S2: Growth Strategy':          data.growthstrat_label            || '',
+      'S2: Quality of Earnings':      data.qoe_label                    || '',
 
       // ── INTERNAL DEFAULT ──
       'Status':                       'Diagnostic Received',
