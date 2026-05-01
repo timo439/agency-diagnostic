@@ -1263,7 +1263,11 @@ function pc(key, val, label, el, qId) {
       // skip multi and text slides
       if (!S2_MULTI.includes(cur) && cur !== 's2c-5') {
         const idx = S2.indexOf(cur);
-        if (idx >= 0 && idx < S2.length - 1) goTo(S2[idx + 1]);
+        if (idx >= 0 && idx < S2.length - 1) {
+          const next = S2[idx + 1];
+          if (next === 's2results') buildS2Results(); // fire submission before navigating
+          else goTo(next);
+        }
       }
     }
   }, 320);
