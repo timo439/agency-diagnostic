@@ -119,30 +119,33 @@ export default async (request, context) => {
     }
   });
 
-  // Log what we're sending
-  console.log('Sending to Airtable:', JSON.stringify(record, null, 2));
+  // If record_id provided → PATCH (update) existing record
+  // Otherwise → POST (create) new record
+  const recordId = data.record_id;
+  const url = recordId
+    ? `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.AIRTABLE_TABLE_ID}/${recordId}`
+    : `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.AIRTABLE_TABLE_ID}`;
+  const method = recordId ? 'PATCH' : 'POST';
+
   console.log('Base ID:', process.env.AIRTABLE_BASE_ID);
   console.log('Table ID:', process.env.AIRTABLE_TABLE_ID);
   console.log('PAT present:', !!process.env.AIRTABLE_PAT);
+  console.log('Method:', method, recordId ? `record: ${recordId}` : 'new record');
 
-  // POST to Airtable
-  const airtableRes = await fetch(
-    `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.AIRTABLE_TABLE_ID}`,
-    {
-      method:  'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.AIRTABLE_PAT}`,
-        'Content-Type':  'application/json',
-      },
-      body: JSON.stringify(record),
-    }
-  );
+  const airtableRes = await fetch(url, {
+    method,
+    headers: {
+      'Authorization': `Bearer ${process.env.AIRTABLE_PAT}`,
+      'Content-Type':  'application/json',
+    },
+    body: JSON.stringify(record),
+  });
 
   const responseText = await airtableRes.text();
   console.log('Airtable status:', airtableRes.status);
-  console.log('Airtable response:', responseText);
 
   if (!airtableRes.ok) {
+    console.log('Airtable error:', responseText);
     return new Response(
       JSON.stringify({ success: false, error: responseText }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
