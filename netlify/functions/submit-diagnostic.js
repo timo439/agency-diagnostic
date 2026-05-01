@@ -17,7 +17,6 @@ export default async (request, context) => {
   const record = {
     fields: {
       // ── METADATA ──
-      'Submission Date':              new Date().toLocaleString('en-GB'),
       'Stage Completed':              data.stage_completed              || '',
 
       // ── FOUNDER ──
