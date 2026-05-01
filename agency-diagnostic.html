@@ -1548,6 +1548,9 @@ function buildResults() {
     document.getElementById('priI').innerHTML = sorted.slice(0,3).map((s,i) =>
       `<div class="pri"><div class="pri-n">${i+1}</div><div><div class="pri-area">${s.t}</div><div class="pri-act">${s.a}</div></div></div>`
     ).join('');
+
+    // Fire Airtable submission with Stage 1 data
+    submitToAirtable('Stage 1 Only');
   }, 350);
 }
 
@@ -1555,6 +1558,8 @@ function buildResults() {
 // BUILD STAGE 2 RESULTS
 // ═══════════════════════════════════════
 function buildS2Results() {
+  // Overwrite the Stage 1 record with full Stage 1 + Stage 2 data
+  submitToAirtable('Stage 1 + Stage 2');
   goTo('s2results');
   setTimeout(() => {
     const fn = v('founderName') || 'there';
@@ -1669,6 +1674,91 @@ function sumRows(rows) {
     if (cls === 'header') return `<div style="border-top:1px solid var(--db);margin:6px 0 2px;padding-top:8px;font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.12em">${k}</div>`;
     return `<div class="sum-row"><span class="sum-k">${k}</span><span class="sum-v${cls?' '+cls:''}">${val}</span></div>`;
   }).join('');
+}
+
+// ═══════════════════════════════════════
+// AIRTABLE SUBMISSION
+// ═══════════════════════════════════════
+async function submitToAirtable(stageCompleted) {
+  const rev = parseFloat(document.getElementById('revenue')?.value) || 0;
+  const tot = sF1() + sC1() + sO1() + sG1();
+  const pct = Math.round((tot / 70) * 100);
+  const ragLabel = (s, m) => s/m >= .70 ? 'Green' : s/m >= .45 ? 'Amber' : 'Red';
+  const ebitda   = Math.round(rev * ({'losing':0,'<10':0.07,'10-20':0.15,'20-30':0.25,'>30':0.32}[A['margin']] || 0));
+  const multNum  = pct >= 70 ? 5.5 : pct >= 50 ? 3.5 : 2;
+  const multStr  = pct >= 70 ? '5–6x' : pct >= 50 ? '3–4x' : '2–3x';
+
+  const payload = {
+    stage_completed:        stageCompleted,
+    founderName:            v('founderName'),
+    agencyName:             v('agencyName'),
+    revenue:                rev,
+    margin_label:           A['margin_label']            || '',
+    revmodel_label:         A['revmodel_label']          || '',
+    conc_label:             A['conc_label']              || '',
+    ret_label:              A['ret_label']               || '',
+    leads:                  A['leads']                   || [],
+    delivery_label:         A['delivery_label']          || '',
+    vac_label:              A['vac_label']               || '',
+    mgmt_label:             A['mgmt_label']              || '',
+    pos_label:              A['pos_label']               || '',
+    pip_label:              A['pip_label']               || '',
+    hc_label:               A['hc_label']                || '',
+    exit_label:             A['exit_label']              || '',
+    challenge:              v('challenge'),
+    score_financial:        sF1(),
+    score_clients:          sC1(),
+    score_ops:              sO1(),
+    score_growth:           sG1(),
+    total_score:            pct,
+    stage_label:            pct >= 70 ? 'Exit-Ready' : pct >= 50 ? 'Growth Stage' : 'Foundation Stage',
+    indicative_valuation:   ebitda > 0 ? `£${(ebitda * multNum / 1e6).toFixed(1)}m (${multStr} EBITDA)` : '',
+    rag_financial:          ragLabel(sF1(), 20),
+    rag_clients:            ragLabel(sC1(), 20),
+    rag_ops:                ragLabel(sO1(), 20),
+    rag_growth:             ragLabel(sG1(), 10),
+    tenure_label:           A['tenure_label']            || '',
+    spendtraj_label:        A['spendtraj_label']         || '',
+    upsell_label:           A['upsell_label']            || '',
+    activeclients_label:    A['activeclients_label']     || '',
+    buyerpersona_label:     A['buyerpersona_label']      || '',
+    clientsize_label:       A['clientsize_label']        || '',
+    contracttransfer_label: A['contracttransfer_label']  || '',
+    salescycle_label:       A['salescycle_label']        || '',
+    closerate_label:        A['closerate_label']         || '',
+    mktspend_label:         A['mktspend_label']          || '',
+    relowner_label:         A['relowner_label']          || '',
+    salesowner_label:       A['salesowner_label']        || '',
+    utilisation_label:      A['utilisation_label']       || '',
+    productised_label:      A['productised_label']       || '',
+    stafftenure_label:      A['stafftenure_label']       || '',
+    foundersplit_label:     A['foundersplit_label']      || '',
+    sic_label:              A['sic_label']               || '',
+    ip_label:               A['ip_label']                || '',
+    thoughtleadership:      A['thoughtleadership']       || [],
+    casestudies_label:      A['casestudies_label']       || '',
+    nps_label:              A['nps_label']               || '',
+    posstmt:                v('posstmt'),
+    contracts_label:        A['contracts_label']         || '',
+    financials_label:       A['financials_label']        || '',
+    ipdocs_label:           A['ipdocs_label']            || '',
+    employment_label:       A['employment_label']        || '',
+    dataroom_label:         A['dataroom_label']          || '',
+    expansion:              A['expansion']               || [],
+    growthstrat_label:      A['growthstrat_label']       || '',
+    qoe_label:              A['qoe_label']               || '',
+  };
+
+  try {
+    await fetch('/api/submit-diagnostic', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload),
+    });
+  } catch (err) {
+    // Fail silently — never break the founder's experience
+    console.error('Airtable submission error:', err);
+  }
 }
 
 // ═══════════════════════════════════════
