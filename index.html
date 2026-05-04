@@ -224,16 +224,111 @@ textarea.txt-input{resize:none;min-height:110px;font-size:15px;line-height:1.6;p
 
 /* RESPONSIVE */
 @media(max-width:600px){
-  .topbar{padding:0 16px}.app{padding:28px 16px 60px}
-  .intro-cards,.g3,.sg,.choices.grid{grid-template-columns:1fr}
-  .choices{grid-template-columns:1fr}
-  .res-hero{flex-direction:column;padding:24px;gap:20px}
-  .nav-arrows{bottom:16px;right:16px}
-  .q-text{font-size:24px}
-  .slide{padding:28px 20px}
-  .s2-sessions{grid-template-columns:1fr}
-  .s2-invite{padding:20px}
-  .intro-slide,.sess-intro-slide{padding:32px 20px}
+  /* ── TOPBAR ── */
+  .topbar{padding:0 14px;height:46px}
+  .tb-brand{font-size:11px}
+  .prg{width:90px}
+  .q-counter{font-size:10px;max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* ── SLIDES ── */
+  .slide{padding:18px 16px 80px;justify-content:flex-start;overflow-y:auto}
+  .slide-inner{max-width:100%}
+
+  /* ── QUESTIONS ── */
+  .q-text{font-size:22px;line-height:1.2;margin-bottom:8px}
+  .q-text em{font-size:22px}
+  .q-why{font-size:12px;margin-bottom:18px}
+  .q-eye{font-size:10px;margin-bottom:10px}
+  .session-banner{font-size:10px;padding:4px 10px;margin-bottom:10px}
+
+  /* ── CHOICES ── */
+  .choices{gap:7px}
+  .choices.grid{grid-template-columns:1fr}
+  .choice{padding:12px 14px;gap:10px}
+  .choice-key{width:24px;height:24px;font-size:10px;flex-shrink:0}
+  .choice-label{font-size:13px}
+  .choices.grid .choice{flex-direction:row;align-items:center;padding:12px 14px}
+  .choices.grid .choice-key{width:24px;height:24px;font-size:10px}
+  .choices.grid .choice-label{font-size:13px}
+
+  /* ── INPUTS ── */
+  .txt-input{font-size:16px;padding:13px 16px}
+  .txt-input.has-prefix{padding-left:28px}
+  .txt-prefix{left:14px;font-size:16px}
+  textarea.txt-input{min-height:90px;font-size:14px}
+
+  /* ── BUTTONS & CTA ── */
+  .cta-row{flex-direction:column;align-items:stretch;gap:10px;margin-top:16px}
+  .btn{justify-content:center;width:100%}
+  .btn-lg{padding:14px 24px;font-size:14px}
+  .press-hint{display:none}
+
+  /* ── NAV ARROWS ── */
+  .nav-arrows{bottom:14px;right:14px;gap:6px}
+  .nav-arr{width:44px;height:44px;font-size:20px}
+
+  /* ── INTRO SLIDE ── */
+  .intro-slide{padding:24px 16px 80px;justify-content:flex-start;overflow-y:auto}
+  .intro-slide .q-text{font-size:26px}
+  .intro-cards{grid-template-columns:1fr;margin:16px 0 20px;gap:6px}
+  .ic{padding:12px}
+  .intro-meta{font-size:11px}
+
+  /* ── SESSION INTRO SLIDE ── */
+  .sess-intro-slide{padding:24px 16px 80px;justify-content:flex-start;overflow-y:auto}
+  .sess-intro-slide .q-text{font-size:22px}
+  .sess-feed{padding:10px 12px}
+  .sess-feed-week{font-size:9px;min-width:44px}
+  .sess-feed-text{font-size:12px}
+
+  /* ── STAGE 2 INVITE ── */
+  .s2-invite{padding:18px 16px;margin:18px 0}
+  .s2-invite-top{flex-direction:column;gap:10px}
+  .s2-invite-h{font-size:16px}
+  .s2-invite-p{font-size:12px}
+  .s2-sessions{grid-template-columns:1fr;gap:6px;margin-bottom:14px}
+  .s2-sess{padding:10px 12px}
+  .s2-sess-t{font-size:12px}
+  .s2-sess-d{font-size:10px}
+
+  /* ── RESULTS SLIDE ── */
+  .results-slide{overflow-y:auto}
+  .results-inner{padding:20px 14px 60px;max-width:100%}
+  .res-hero{flex-direction:column;padding:20px 18px;gap:16px;margin-bottom:14px;text-align:center;align-items:center}
+  .ring-wrap{width:110px;height:110px}
+  .ring-n{font-size:30px}
+  .res-h{font-size:20px}
+  .res-p{font-size:12px;max-width:100%}
+  .sg{grid-template-columns:1fr;gap:8px;margin-bottom:14px}
+  .sc{padding:14px 15px}
+  .sc-v{font-size:22px}
+  .personal-note{padding:14px 16px;margin-bottom:14px}
+  .pn-text{font-size:13px}
+  .sum-blk{padding:18px 16px;margin-bottom:14px}
+  .sum-blk h3{font-size:13px;margin-bottom:10px}
+  .sum-row{font-size:11px;padding:7px 0;flex-wrap:wrap;gap:2px}
+  .sum-k{width:100%;color:var(--dim)}
+  .sum-v{width:100%}
+  .pri{padding:12px 14px;gap:10px}
+  .pri-h{font-size:18px;margin-bottom:10px}
+  .pri-n{width:28px;height:28px;font-size:13px}
+  .pri-area{font-size:12px}
+  .pri-act{font-size:11px}
+  .res-ft-btns{flex-direction:column;align-items:stretch}
+  .res-ft-btns .btn{width:100%;justify-content:center}
+
+  /* ── STAGE 2 RESULTS ── */
+  #slide-s2results .results-inner{padding:20px 14px 60px}
+  #slide-s2results .pc-scores{grid-template-columns:1fr}
+  #slide-s2results .pc-pri{flex-direction:column;gap:8px}
+
+  /* ── GRIDS ── */
+  .g2,.g3{grid-template-columns:1fr}
+  .s2-section-divider{margin:16px 0 12px}
+
+  /* ── STAGE 2 CONFIRMATION ── */
+  #slide-s2results .results-inner>div{padding:20px 16px!important}
+  #slide-s2results .results-inner>div>div[style*="border-radius"]{padding:20px 16px!important}
 }
 </style>
 </head>
